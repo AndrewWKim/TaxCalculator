@@ -1,4 +1,8 @@
 TaxCalculator/bin/
 TaxCalculator/obj/
+TaxCalculator.Models/bin/
+TaxCalculator.Models/obj/
+TaxCalculator.Services/bin/
+TaxCalculator.Services/obj/
 /.vs
 packages/
