@@ -6,7 +6,7 @@ namespace TaxCalculator.Models.RequestModels
     {
         public string FullName { get; set; }
 
-        public int SSN { get; set; }
+        public long SSN { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
