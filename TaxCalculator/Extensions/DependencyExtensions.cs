@@ -2,12 +2,13 @@
 using TaxCalculator.Services;
 using TaxCalculator.Services.Interfaces;
 
-namespace CottageApi.Extensions
+namespace TaxCalculator.Extensions
 {
     public static class DependencyExtensions
     {
         public static IServiceCollection AddOwnDependencies(this IServiceCollection services)
         {
+            services.AddScoped<ITaxCalculatorService, TaxCalculatorService>();
             services.AddScoped<ICalculatorService, CalculatorService>();
             return services;
 		}

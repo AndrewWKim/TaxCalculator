@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TaxCalculator.Models.Entities;
+using TaxCalculator.Models.RequestModels;
 
 namespace TaxCalculator.Services.Interfaces
 {
     public interface ICalculatorService
     {
-        void CalculateTaxes();
+        TaxPayerContract CalculateTaxes(TaxPayerContractModel contract);
     }
 }
