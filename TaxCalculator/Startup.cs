@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using TaxCalculator.Extensions;
+using TaxCalculator.Models.Configurations;
 
 namespace TaxCalculator
 {
@@ -26,6 +27,8 @@ namespace TaxCalculator
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = GetConfig();
+
             services.AddCors(o => o.AddPolicy("AllowAnyOrigin", builder =>
             {
                 builder.AllowAnyMethod()
@@ -41,6 +44,7 @@ namespace TaxCalculator
             });
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddSingleton(typeof(Config), config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +59,14 @@ namespace TaxCalculator
             app.UseCors("AllowAnyOrigin");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private Config GetConfig()
+        {
+            var config = new Config();
+            Configuration.GetSection("TaxCalculatorAPI").Bind(config);
+
+            return config;
         }
     }
 }

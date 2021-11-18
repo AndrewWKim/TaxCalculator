@@ -1,4 +1,5 @@
 ﻿using System;
+using TaxCalculator.Models.Configurations;
 using TaxCalculator.Models.Entities;
 using TaxCalculator.Services.Interfaces;
 
@@ -6,9 +7,16 @@ namespace TaxCalculator.Services
 {
     public class TaxCalculatorService: ITaxCalculatorService
     {
+        private readonly TaxConstantsConfig _taxConstantsConfig;
+
+        public TaxCalculatorService(Config config)
+        {
+            _taxConstantsConfig = config.TaxConstants;
+        }
+
         public TaxPayerContract CalculateAllTaxes(TaxPayerContract contract)
         {
-            if (contract.GrossIncome <= 1000)
+            if (contract.GrossIncome <= _taxConstantsConfig.MinTaxationValue)
             {
                 contract.NetIncome = contract.GrossIncome;
                 return contract;
@@ -28,40 +36,40 @@ namespace TaxCalculator.Services
         {
             if (charitySpent.HasValue)
             {
-                var maxCharityValue = grossIncome * 0.1;
+                var maxCharityValue = grossIncome * _taxConstantsConfig.MaxCharitySpentPercent;
                 grossIncome = charitySpent.Value > maxCharityValue 
                     ? grossIncome - maxCharityValue 
                     : grossIncome - charitySpent.Value;
             }
 
-            return Math.Round(grossIncome, 2, MidpointRounding.ToZero);
+            return RoundToZero(grossIncome);
         }
 
         private double CalculateIncomeTax(double income)
         {
-            if (income < 1000)
+            if (income < _taxConstantsConfig.MinTaxationValue)
             {
                 return 0;
             }
 
-            return Math.Round((income - 1000) * 0.1, 2, MidpointRounding.ToZero);
+            return RoundToZero((income - _taxConstantsConfig.MinTaxationValue) * _taxConstantsConfig.IncomeTaxPercent);
         }
 
         private double CalculateSocialTax(double income)
         {
             double result = 0;
-            if (income < 1000)
+            if (income < _taxConstantsConfig.MinSocialTax)
             {
                 return result;
             }
 
-            if (income > 3000)
+            if (income > _taxConstantsConfig.MaxSocialTax)
             {
-                result = (3000 - 1000) * 0.15;
+                result = (_taxConstantsConfig.MaxSocialTax - _taxConstantsConfig.MinSocialTax) * _taxConstantsConfig.SocialTaxPercent;
             }
             else
             {
-                result = (income - 1000) * 0.15;
+                result = (income - _taxConstantsConfig.MinSocialTax) * _taxConstantsConfig.SocialTaxPercent;
             }
 
             return RoundToZero(result);
