@@ -14,7 +14,7 @@ namespace TaxCalculator.UnitTests
         public void Initialize()
         {
             BaseInit();
-            var taxCalculatorService = new TaxCalculatorService();
+            var taxCalculatorService = new TaxCalculatorService(Config);
             TestedInstance = new CalculatorService(Mapper, taxCalculatorService);
         }
 
