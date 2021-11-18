@@ -65,7 +65,7 @@ namespace TaxCalculator.UnitTests.TestData
 
             var correctResult = new TaxPayerContract()
             {
-                GrossIncome = 3400,
+                GrossIncome = 3600,
                 CharitySpent = 520,
                 IncomeTax = 224,
                 SocialTax = 300,
@@ -89,7 +89,7 @@ namespace TaxCalculator.UnitTests.TestData
 
             var correctResult = new TaxPayerContract()
             {
-                GrossIncome = 3400,
+                GrossIncome = 2500,
                 CharitySpent = 150,
                 IncomeTax = 135,
                 SocialTax = 202.5,
