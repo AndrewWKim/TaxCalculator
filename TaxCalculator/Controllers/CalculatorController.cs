@@ -24,7 +24,7 @@ namespace TaxCalculator.Controllers
         [HttpPost]
         public async Task<TaxPayerContractViewModel> Calculate([FromBody]TaxPayerContractModel contract)
         {
-            var taxPayerContract = _calculatorService.CalculateTaxes(contract);
+            var taxPayerContract = await _calculatorService.CalculateTaxesAsync(contract);
             var contractTaxResult = _mapper.Map<TaxPayerContractViewModel>(taxPayerContract);
             return contractTaxResult;
         }

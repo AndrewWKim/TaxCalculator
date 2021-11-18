@@ -1,4 +1,4 @@
-﻿using System;
+﻿using TaxCalculator.Core.Utils;
 using TaxCalculator.Models.Configurations;
 using TaxCalculator.Models.Entities;
 using TaxCalculator.Services.Interfaces;
@@ -27,7 +27,7 @@ namespace TaxCalculator.Services
             contract.IncomeTax = CalculateIncomeTax(taxableValue);
             contract.SocialTax = CalculateSocialTax(taxableValue);
             contract.TotalTax = CalculateTotalTax(contract);
-            contract.NetIncome = RoundToZero(contract.GrossIncome - contract.TotalTax.Value);
+            contract.NetIncome = MathUtils.RoundToZero(contract.GrossIncome - contract.TotalTax.Value);
 
             return contract;
         }
@@ -42,7 +42,7 @@ namespace TaxCalculator.Services
                     : grossIncome - charitySpent.Value;
             }
 
-            return RoundToZero(grossIncome);
+            return MathUtils.RoundToZero(grossIncome);
         }
 
         private double CalculateIncomeTax(double income)
@@ -52,7 +52,7 @@ namespace TaxCalculator.Services
                 return 0;
             }
 
-            return RoundToZero((income - _taxConstantsConfig.MinTaxationValue) * _taxConstantsConfig.IncomeTaxPercent);
+            return MathUtils.RoundToZero((income - _taxConstantsConfig.MinTaxationValue) * _taxConstantsConfig.IncomeTaxPercent);
         }
 
         private double CalculateSocialTax(double income)
@@ -72,19 +72,14 @@ namespace TaxCalculator.Services
                 result = (income - _taxConstantsConfig.MinSocialTax) * _taxConstantsConfig.SocialTaxPercent;
             }
 
-            return RoundToZero(result);
+            return MathUtils.RoundToZero(result);
         }
 
         private double CalculateTotalTax(TaxPayerContract contract)
         {
             var totalTaxes = contract.IncomeTax.Value + contract.SocialTax.Value;
 
-            return RoundToZero(totalTaxes);
-        }
-
-        private double RoundToZero(double value, int? digits = 2)
-        {
-            return Math.Round(value, digits.Value, MidpointRounding.ToZero);
+            return MathUtils.RoundToZero(totalTaxes);
         }
     }
 }

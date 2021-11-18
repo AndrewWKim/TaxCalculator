@@ -8,8 +8,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Models", "TaxCalculator.Models\TaxCalculator.Models.csproj", "{E85F4498-3907-45B0-B8BA-6046A3089FCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Services", "TaxCalculator.Services\TaxCalculator.Services.csproj", "{2D902FD3-0C52-48DD-83BF-7E217A1DEC41}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448} = {C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.UnitTests", "TaxCalculator.UnitTests\TaxCalculator.UnitTests.csproj", "{38F456DD-4BF3-4E90-AB78-DE559B02F474}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.UnitTests", "TaxCalculator.UnitTests\TaxCalculator.UnitTests.csproj", "{38F456DD-4BF3-4E90-AB78-DE559B02F474}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Repositories", "TaxCalculator.Repositories\TaxCalculator.Repositories.csproj", "{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Core", "TaxCalculator.Core\TaxCalculator.Core.csproj", "{61F4B41E-F2BE-480C-AF8A-BCB6BF743C4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +40,14 @@ Global
 		{38F456DD-4BF3-4E90-AB78-DE559B02F474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F456DD-4BF3-4E90-AB78-DE559B02F474}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F456DD-4BF3-4E90-AB78-DE559B02F474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C599E4AB-E7B3-437D-9A14-DC6C1FFB6448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F4B41E-F2BE-480C-AF8A-BCB6BF743C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F4B41E-F2BE-480C-AF8A-BCB6BF743C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F4B41E-F2BE-480C-AF8A-BCB6BF743C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F4B41E-F2BE-480C-AF8A-BCB6BF743C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

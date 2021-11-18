@@ -2,7 +2,7 @@
 using TaxCalculator.Models.Exceptions;
 using TaxCalculator.Models.RequestModels;
 
-namespace TaxCalculator.Services.Utils
+namespace TaxCalculator.Core.Utils
 {
     public static class ModelValidation
     {

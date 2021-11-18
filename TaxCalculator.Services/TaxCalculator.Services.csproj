@@ -9,7 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaxCalculator.Core\TaxCalculator.Core.csproj" />
     <ProjectReference Include="..\TaxCalculator.Models\TaxCalculator.Models.csproj" />
+    <ProjectReference Include="..\TaxCalculator.Repositories\TaxCalculator.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

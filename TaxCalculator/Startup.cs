@@ -2,12 +2,14 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using TaxCalculator.Extensions;
 using TaxCalculator.Models.Configurations;
+using TaxCalculator.Repositories.Context;
 
 namespace TaxCalculator
 {
@@ -36,6 +38,8 @@ namespace TaxCalculator
                     .AllowAnyOrigin();
             }));
 
+            services.AddSingleton(typeof(Config), config);
+            services.AddDbContext<TaxCalculatorContext>(options => options.UseInMemoryDatabase(databaseName: "TaxCalculator"));
             services.AddOwnDependencies();
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -44,7 +48,6 @@ namespace TaxCalculator
             });
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddSingleton(typeof(Config), config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
