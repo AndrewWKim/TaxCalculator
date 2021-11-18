@@ -1,11 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using TaxCalculator.Models.Exceptions;
 using TaxCalculator.Models.RequestModels;
 using TaxCalculator.Repositories;
-using TaxCalculator.Repositories.Context;
 using TaxCalculator.Services;
 using TaxCalculator.Services.Interfaces;
 using TaxCalculator.UnitTests.Base;
@@ -21,7 +19,7 @@ namespace TaxCalculator.UnitTests
         {
             BaseInit();
             var taxCalculatorService = new TaxCalculatorService(Config);
-            var taxPayerContractRepository = new TaxPayerContractRepository(TaxCalculatorContext);
+            var taxPayerContractRepository = new TaxPayerContractRepository(TaxCalculatorContext, MemoryCache, Config);
             TestedInstance = new CalculatorService(Mapper, taxCalculatorService, taxPayerContractRepository);
         }
 
