@@ -57,6 +57,7 @@ namespace TaxCalculator
 
             app.UseRouting();
             app.UseCors("AllowAnyOrigin");
+            app.UseGeneralExceptionMiddleware();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

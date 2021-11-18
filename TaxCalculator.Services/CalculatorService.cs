@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using TaxCalculator.Models.Entities;
+using TaxCalculator.Models.Exceptions;
 using TaxCalculator.Models.RequestModels;
 using TaxCalculator.Services.Interfaces;
+using TaxCalculator.Services.Utils;
 
 namespace TaxCalculator.Services
 {
@@ -18,7 +20,8 @@ namespace TaxCalculator.Services
 
         public TaxPayerContract CalculateTaxes(TaxPayerContractModel contract)
         {
-            // TODO add validation here
+            ModelValidation.ValidateContract(contract);
+
             var taxPayerContract = _mapper.Map<TaxPayerContract>(contract);
 
             taxPayerContract = _taxCalculatorService.CalculateAllTaxes(taxPayerContract);
