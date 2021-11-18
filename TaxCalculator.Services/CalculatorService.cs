@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using TaxCalculator.Models.Entities;
 using TaxCalculator.Models.RequestModels;
 using TaxCalculator.Services.Interfaces;
 using TaxCalculator.Core.Utils;
-using TaxCalculator.Repositories.Context;
 using TaxCalculator.Repositories.Interfaces;
 
 namespace TaxCalculator.Services

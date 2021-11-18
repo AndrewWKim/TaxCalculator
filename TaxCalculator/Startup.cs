@@ -38,9 +38,11 @@ namespace TaxCalculator
                     .AllowAnyOrigin();
             }));
 
+            services.AddMemoryCache();
             services.AddSingleton(typeof(Config), config);
-            services.AddDbContext<TaxCalculatorContext>(options => options.UseInMemoryDatabase(databaseName: "TaxCalculator"));
+            services.AddDbContext<TaxCalculatorContext>();
             services.AddOwnDependencies();
+            
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {

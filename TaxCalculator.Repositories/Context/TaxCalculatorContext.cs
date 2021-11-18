@@ -9,5 +9,10 @@ namespace TaxCalculator.Repositories.Context
 
         public TaxCalculatorContext(DbContextOptions<TaxCalculatorContext> options)
             : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseInMemoryDatabase(databaseName: "TaxCalculator");
+        }
     }
 }

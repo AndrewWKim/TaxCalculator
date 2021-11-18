@@ -8,7 +8,8 @@ namespace TaxCalculator.Models.Configurations
 {
     public class Config
     {
-
         public TaxConstantsConfig TaxConstants { get; set; }
+
+        public int CacheMinutes { get; set; }
     }
 }
