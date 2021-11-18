@@ -10,34 +10,29 @@ namespace TaxCalculator.Services.Utils
         {
             if (contract.GrossIncome < 0)
             {
-                throw new ValidationException("grossIncome", "Gross Income value can't be negative");
+                throw new ValidationException(nameof(TaxPayerContractModel.GrossIncome), "Gross Income value can't be negative");
             }
 
             if (contract.CharitySpent.HasValue && contract.CharitySpent.Value < 0)
             {
-                throw new ValidationException("charitySpent", "Charity Spent value can't be negative");
+                throw new ValidationException(nameof(TaxPayerContractModel.CharitySpent), "Charity Spent value can't be negative");
             }
 
             if (contract.SSN == 0)
             {
-                throw new ValidationException("SSN", "SSN is required");
+                throw new ValidationException(nameof(TaxPayerContractModel.SSN), "SSN is required");
             }
 
             var ssnLength = contract.SSN.ToString().Length;
 
             if (ssnLength < 5 || ssnLength > 10)
             {
-                throw new ValidationException("SSN", "SSN length should be from 5 to 10 digits");
-            }
-
-            if (string.IsNullOrEmpty(contract.FullName))
-            {
-                throw new ValidationException("Full Name", "Full Name is required");
+                throw new ValidationException(nameof(TaxPayerContractModel.SSN), "SSN length should be from 5 to 10 digits");
             }
 
             if (!IsFullNameValid(contract.FullName))
             {
-                throw new ValidationException("Full Name", "Full Name at least two words(only symbols) separated by space");
+                throw new ValidationException(nameof(TaxPayerContractModel.FullName), "Full Name at least two words(only symbols) separated by space");
             }
         }
 

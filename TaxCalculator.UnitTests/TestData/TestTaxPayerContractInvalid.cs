@@ -38,6 +38,16 @@ namespace TaxCalculator.UnitTests.TestData
             };
         }
 
+        public static TaxPayerContractModel GetContractEmptySSN()
+        {
+            return new TaxPayerContractModel()
+            {
+                FullName = "Mick Smith",
+                DateOfBirth = DateTime.Now.AddYears(-100),
+                GrossIncome = 8888
+            };
+        }
+
         public static TaxPayerContractModel GetContractInvalidGross()
         {
             return new TaxPayerContractModel()
