@@ -1,5 +1,8 @@
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using TaxCalculator.Models.Exceptions;
+using TaxCalculator.Models.RequestModels;
 using TaxCalculator.Services;
 using TaxCalculator.Services.Interfaces;
 using TaxCalculator.UnitTests.Base;
@@ -80,6 +83,59 @@ namespace TaxCalculator.UnitTests
             Assert.AreEqual(contract.IncomeTax, validResult.IncomeTax);
             Assert.AreEqual(contract.SocialTax, validResult.SocialTax);
             Assert.AreEqual(contract.TotalTax, validResult.TotalTax);
+        }
+
+        [TestMethod]
+        public void CalculateContractInvalidName_ThrowValidationException()
+        {
+            var contract = TestTaxPayerContractInvalid.GetContractInvalidName();
+
+            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+
+            Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.FullName)));
+        }
+
+        [TestMethod]
+        public void CalculateContractSSNLength_ThrowValidationException()
+        {
+            var contractShortSSN = TestTaxPayerContractInvalid.GetContractShortSSN();
+            var contractLongSSN = TestTaxPayerContractInvalid.GetContractLongSSN();
+
+            var exceptionShort = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contractShortSSN));
+            var exceptionLong = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contractLongSSN));
+
+            Assert.IsTrue(exceptionShort.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
+            Assert.IsTrue(exceptionLong.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
+        }
+
+        [TestMethod]
+        public void CalculateContractEmptySSN_ThrowValidationException()
+        {
+            var contract = TestTaxPayerContractInvalid.GetContractEmptySSN();
+
+            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+
+            Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
+        }
+
+        [TestMethod]
+        public void CalculateContractGrossIncome_ThrowValidationException()
+        {
+            var contract = TestTaxPayerContractInvalid.GetContractInvalidGross();
+
+            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+
+            Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.GrossIncome)));
+        }
+
+        [TestMethod]
+        public void CalculateContractCharitySpent_ThrowValidationException()
+        {
+            var contract = TestTaxPayerContractInvalid.GetContractInvalidCharity();
+
+            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+
+            Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.CharitySpent)));
         }
     }
 }
