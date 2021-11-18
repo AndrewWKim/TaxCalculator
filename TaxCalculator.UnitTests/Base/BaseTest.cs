@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using AutoMapper;
 using AutoMapper.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using TaxCalculator.Mappings;
 using TaxCalculator.Models.Configurations;
+using TaxCalculator.Repositories.Context;
 
 namespace TaxCalculator.UnitTests.Base
 {
@@ -14,12 +15,18 @@ namespace TaxCalculator.UnitTests.Base
         protected IMapper Mapper;
         protected TTestedInstance TestedInstance;
         protected Config Config;
+        protected ITaxCalculatorContext TaxCalculatorContext;
 
         protected void BaseInit()
         {
             var mappings = new MapperConfigurationExpression();
             mappings.AddProfile<MappingProfile>();
             Mapper = new Mapper(new MapperConfiguration(mappings));
+
+            var options = new DbContextOptionsBuilder<TaxCalculatorContext>()
+                .UseInMemoryDatabase(databaseName: "TaxCalculator")
+                .Options;
+            TaxCalculatorContext = new TaxCalculatorContext(options);
             InitConfig();
         }
 

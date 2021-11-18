@@ -1,8 +1,11 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TaxCalculator.Models.Exceptions;
 using TaxCalculator.Models.RequestModels;
+using TaxCalculator.Repositories;
+using TaxCalculator.Repositories.Context;
 using TaxCalculator.Services;
 using TaxCalculator.Services.Interfaces;
 using TaxCalculator.UnitTests.Base;
@@ -18,16 +21,17 @@ namespace TaxCalculator.UnitTests
         {
             BaseInit();
             var taxCalculatorService = new TaxCalculatorService(Config);
-            TestedInstance = new CalculatorService(Mapper, taxCalculatorService);
+            var taxPayerContractRepository = new TaxPayerContractRepository(TaxCalculatorContext);
+            TestedInstance = new CalculatorService(Mapper, taxCalculatorService, taxPayerContractRepository);
         }
 
         [TestMethod]
-        public void CalculateContractLessMin_Sucess()
+        public async Task CalculateContractLessMin_Sucess()
         {
             var contractsTuple = TestTaxPayerContract.GetContractLessMin();
             var validResult = contractsTuple.Item2;
 
-            var contract = TestedInstance.CalculateTaxes(contractsTuple.Item1);
+            var contract = await TestedInstance.CalculateTaxesAsync(contractsTuple.Item1);
 
             Assert.AreEqual(contract.GrossIncome, validResult.GrossIncome);
             Assert.AreEqual(contract.NetIncome, validResult.NetIncome);
@@ -38,12 +42,12 @@ namespace TaxCalculator.UnitTests
         }
 
         [TestMethod]
-        public void CalculateContractHigherMaxNoCharity_Sucess()
+        public async Task CalculateContractHigherMaxNoCharity_Sucess()
         {
             var contractsTuple = TestTaxPayerContract.GetContractHigherMaxNoCharity();
             var validResult = contractsTuple.Item2;
 
-            var contract = TestedInstance.CalculateTaxes(contractsTuple.Item1);
+            var contract = await TestedInstance.CalculateTaxesAsync(contractsTuple.Item1);
 
             Assert.AreEqual(contract.GrossIncome, validResult.GrossIncome);
             Assert.AreEqual(contract.NetIncome, validResult.NetIncome);
@@ -54,12 +58,12 @@ namespace TaxCalculator.UnitTests
         }
 
         [TestMethod]
-        public void CalculateContractHigherMaxWithCharity_Sucess()
+        public async Task CalculateContractHigherMaxWithCharity_Sucess()
         {
             var contractsTuple = TestTaxPayerContract.GetContractHigherMaxWithCharity();
             var validResult = contractsTuple.Item2;
 
-            var contract = TestedInstance.CalculateTaxes(contractsTuple.Item1);
+            var contract = await TestedInstance.CalculateTaxesAsync(contractsTuple.Item1);
 
             Assert.AreEqual(contract.GrossIncome, validResult.GrossIncome);
             Assert.AreEqual(contract.NetIncome, validResult.NetIncome);
@@ -70,12 +74,12 @@ namespace TaxCalculator.UnitTests
         }
 
         [TestMethod]
-        public void CalculateContractWithCharity_Sucess()
+        public async Task CalculateContractWithCharity_Sucess()
         {
             var contractsTuple = TestTaxPayerContract.GetContractWithCharity();
             var validResult = contractsTuple.Item2;
 
-            var contract = TestedInstance.CalculateTaxes(contractsTuple.Item1);
+            var contract = await TestedInstance.CalculateTaxesAsync(contractsTuple.Item1);
 
             Assert.AreEqual(contract.GrossIncome, validResult.GrossIncome);
             Assert.AreEqual(contract.NetIncome, validResult.NetIncome);
@@ -86,54 +90,54 @@ namespace TaxCalculator.UnitTests
         }
 
         [TestMethod]
-        public void CalculateContractInvalidName_ThrowValidationException()
+        public async Task CalculateContractInvalidName_ThrowValidationException()
         {
             var contract = TestTaxPayerContractInvalid.GetContractInvalidName();
 
-            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+            var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contract));
 
             Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.FullName)));
         }
 
         [TestMethod]
-        public void CalculateContractSSNLength_ThrowValidationException()
+        public async Task CalculateContractSSNLength_ThrowValidationException()
         {
             var contractShortSSN = TestTaxPayerContractInvalid.GetContractShortSSN();
             var contractLongSSN = TestTaxPayerContractInvalid.GetContractLongSSN();
 
-            var exceptionShort = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contractShortSSN));
-            var exceptionLong = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contractLongSSN));
+            var exceptionShort = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contractShortSSN));
+            var exceptionLong = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contractLongSSN));
 
             Assert.IsTrue(exceptionShort.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
             Assert.IsTrue(exceptionLong.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
         }
 
         [TestMethod]
-        public void CalculateContractEmptySSN_ThrowValidationException()
+        public async Task CalculateContractEmptySSN_ThrowValidationException()
         {
             var contract = TestTaxPayerContractInvalid.GetContractEmptySSN();
 
-            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+            var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contract));
 
             Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.SSN)));
         }
 
         [TestMethod]
-        public void CalculateContractGrossIncome_ThrowValidationException()
+        public async Task CalculateContractGrossIncome_ThrowValidationException()
         {
             var contract = TestTaxPayerContractInvalid.GetContractInvalidGross();
 
-            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+            var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contract));
 
             Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.GrossIncome)));
         }
 
         [TestMethod]
-        public void CalculateContractCharitySpent_ThrowValidationException()
+        public async Task CalculateContractCharitySpent_ThrowValidationException()
         {
             var contract = TestTaxPayerContractInvalid.GetContractInvalidCharity();
 
-            var exception = Assert.ThrowsException<ValidationException>(() => TestedInstance.CalculateTaxes(contract));
+            var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => TestedInstance.CalculateTaxesAsync(contract));
 
             Assert.IsTrue(exception.Errors.Any(err => err.FieldName == nameof(TaxPayerContractModel.CharitySpent)));
         }

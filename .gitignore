@@ -6,5 +6,9 @@ TaxCalculator.Services/bin/
 TaxCalculator.Services/obj/
 TaxCalculator.UnitTests/bin/
 TaxCalculator.UnitTests/obj/
+TaxCalculator.Repositories/bin/
+TaxCalculator.Repositories/obj/
+TaxCalculator.Core/bin/
+TaxCalculator.Core/obj/
 /.vs
 packages/
